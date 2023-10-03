@@ -1,5 +1,5 @@
-const { HttpError, ctrlWrapper } = require('../../helpers');
-const { Monument } = require('../../models/monument');
+const { HttpError, ctrlWrapper } = require('../helpers');
+const { Monument } = require('../models/monument');
 
 const getAll = async (req, res) => {
   const result = await Monument.find();
@@ -24,7 +24,16 @@ const add = async (req, res) => {
 
 const updateById = async (req, res) => {
   const { id } = req.params;
-  const result = await monuments.updateById(id, req.body);
+  const result = await Monument.findByIdAndUpdate(id, req.body, { new: true });
+  if (!result) {
+    throw HttpError(404, 'Monument not found');
+  }
+  res.json(result);
+};
+
+const updateFavorite = async (req, res) => {
+  const { id } = req.params;
+  const result = await Monument.findByIdAndUpdate(id, req.body, { new: true });
   if (!result) {
     throw HttpError(404, 'Monument not found');
   }
@@ -33,7 +42,7 @@ const updateById = async (req, res) => {
 
 const deleteById = async (req, res) => {
   const { id } = req.params;
-  const result = await monuments.deleteById(id);
+  const result = await Monument.findByIdAndRemove(id);
   if (!result) {
     throw HttpError(404, 'monument not found');
   }
@@ -46,6 +55,7 @@ module.exports = {
   getAll: ctrlWrapper(getAll),
   getById: ctrlWrapper(getById),
   add: ctrlWrapper(add),
-  // updateById: ctrlWrapper(updateById),
-  // deleteById: ctrlWrapper(deleteById),
+  updateById: ctrlWrapper(updateById),
+  deleteById: ctrlWrapper(deleteById),
+  updateFavorite: ctrlWrapper(updateFavorite),
 };

@@ -22,6 +22,10 @@ const monumentSchema = new Schema(
       type: Number,
       required: true,
     },
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
   },
   { versionKey: false, timestamps: true }
 );
@@ -34,10 +38,15 @@ const addSchema = Joi.object({
     .valid(...typeList)
     .required(),
   price: Joi.number().required(),
+  favorite: Joi.boolean(),
+});
+const updateFavoriteSchemas = Joi.object({
+  favorite: Joi.boolean().required(),
 });
 
 const schemas = {
   addSchema,
+  updateFavoriteSchemas,
 };
 
 const Monument = model('monument', monumentSchema);
