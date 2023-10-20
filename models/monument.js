@@ -8,7 +8,7 @@ const subtitleList = ['open', 'closed'];
 const monumentSchema = new Schema(
   {
     // аксесуари ікони одинарні подвійні
-    type: {
+    category: {
       type: String,
       enum: typeList,
       required: true,
@@ -48,7 +48,7 @@ const addSchema = Joi.object({
   subtitle: Joi.string()
     .valid(...subtitleList)
     .required(),
-  type: Joi.string()
+  category: Joi.string()
     .valid(...typeList)
     .required(),
   price: Joi.number().required(),
