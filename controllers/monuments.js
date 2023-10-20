@@ -2,7 +2,12 @@ const { HttpError, ctrlWrapper } = require('../helpers');
 const { Monument } = require('../models/monument');
 
 const getAll = async (req, res) => {
-  const result = await Monument.find();
+  const { page = 1, limit = 10 } = req.query;
+  const skip = (page - 1) * limit;
+  const result = await Monument.find({}, '-createdAt -updatedAt', {
+    skip,
+    limit,
+  }).populate('owner', 'name email');
   res.json(result);
 };
 
@@ -18,7 +23,9 @@ const getById = async (req, res) => {
 };
 
 const add = async (req, res) => {
-  const result = await Monument.create(req.body);
+  const { _id: owner } = req.user;
+  const result = await Monument.create({ ...req.body, owner });
+
   res.status(201).json(result);
 };
 

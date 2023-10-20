@@ -4,13 +4,19 @@ const Joi = require('joi');
 const { handleMongooseError } = require('../helpers');
 
 const typeList = ['single', 'double', 'accessories', 'icons'];
-
+const subtitleList = ['open', 'closed'];
 const monumentSchema = new Schema(
   {
     // аксесуари ікони одинарні подвійні
     type: {
       type: String,
       enum: typeList,
+      required: true,
+    },
+    // відкритий або закритий
+    subtitle: {
+      type: String,
+      enum: subtitleList,
       required: true,
     },
     // опис
@@ -26,6 +32,11 @@ const monumentSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+      required: true,
+    },
   },
   { versionKey: false, timestamps: true }
 );
@@ -34,6 +45,9 @@ monumentSchema.post('save', handleMongooseError);
 
 const addSchema = Joi.object({
   title: Joi.string().required(),
+  subtitle: Joi.string()
+    .valid(...subtitleList)
+    .required(),
   type: Joi.string()
     .valid(...typeList)
     .required(),

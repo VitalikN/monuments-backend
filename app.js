@@ -15,7 +15,7 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/auth', authRoyter);
+app.use('/api/admin', authRoyter);
 app.use('/api/monuments', monumentsRouter);
 
 app.use((req, res) => {
