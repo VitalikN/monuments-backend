@@ -3,17 +3,18 @@ const cors = require('cors');
 const logger = require('morgan');
 
 require('dotenv').config();
+const app = express();
 
 const authRoyter = require('./routes/api/auth');
 const monumentsRouter = require('./routes/api/monuments');
-
-const app = express();
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
+
+// app.use(express.static('public'));
 
 app.use('/api/admin', authRoyter);
 app.use('/api/monuments', monumentsRouter);

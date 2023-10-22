@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('joi');
 
-const { handleMongooseError } = require('../helpers');
+const { HandleMongooseError } = require('../helpers');
 
 const typeList = ['single', 'double', 'accessories', 'icons'];
 const subtitleList = ['open', 'closed'];
@@ -32,6 +32,11 @@ const monumentSchema = new Schema(
       type: Boolean,
       default: false,
     },
+
+    url: {
+      type: String,
+      required: [true, 'Url is required'],
+    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: 'user',
@@ -40,8 +45,6 @@ const monumentSchema = new Schema(
   },
   { versionKey: false, timestamps: true }
 );
-
-monumentSchema.post('save', handleMongooseError);
 
 const addSchema = Joi.object({
   title: Joi.string().required(),
@@ -62,6 +65,8 @@ const schemas = {
   addSchema,
   updateFavoriteSchemas,
 };
+
+monumentSchema.post('save', HandleMongooseError);
 
 const Monument = model('monument', monumentSchema);
 

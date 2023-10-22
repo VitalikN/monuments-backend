@@ -24,8 +24,14 @@ const getById = async (req, res) => {
 };
 
 const add = async (req, res) => {
+  const url = req.files['url'][0].path;
+
   const { _id: owner } = req.user;
-  const result = await Monument.create({ ...req.body, owner });
+  const result = await Monument.create({
+    ...req.body,
+    url: url,
+    owner,
+  });
 
   res.status(201).json(result);
 };
