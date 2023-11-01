@@ -10,6 +10,12 @@ const router = express.Router();
 router.post('/register', validateBody(schemas.registerSchema), ctrl.register);
 router.post('/login', validateBody(schemas.loginSchema), ctrl.login);
 router.get('/current', authenticate, ctrl.getCurrentUserProfile);
+router.put(
+  '/update',
+  authenticate,
+  validateBody(schemas.updateSchema),
+  ctrl.update
+);
 
 router.post('/logout', authenticate, ctrl.logout);
 
