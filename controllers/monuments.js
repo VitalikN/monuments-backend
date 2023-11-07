@@ -1,16 +1,36 @@
 const { HttpError, ctrlWrapper } = require('../helpers');
 const { Monument } = require('../models/monument');
 
+/** */
+
 const getAll = async (req, res) => {
-  const { page = 1, limit = 10 } = req.query;
+  const { page = 1, limit = 10, category } = req.query;
   const skip = (page - 1) * limit;
-  const result = await Monument.find({}, '-createdAt -updatedAt', {
+
+  const query = {};
+  if (category) {
+    query.category = category;
+  }
+
+  const result = await Monument.find(query, '-createdAt -updatedAt', {
     skip,
     limit,
   }).populate('owner', 'name email');
 
   res.json(result);
 };
+/** */
+
+// const getAll = async (req, res) => {
+//   const { page = 1, limit = 10 } = req.query;
+//   const skip = (page - 1) * limit;
+//   const result = await Monument.find({}, '-createdAt -updatedAt', {
+//     skip,
+//     limit,
+//   }).populate('owner', 'name email');
+
+//   res.json(result);
+// };
 
 const getById = async (req, res) => {
   console.log(req.params);
