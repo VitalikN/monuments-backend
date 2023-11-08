@@ -15,22 +15,12 @@ const getAll = async (req, res) => {
   const result = await Monument.find(query, '-createdAt -updatedAt', {
     skip,
     limit,
-  }).populate('owner', 'name email');
+  })
+    .populate('owner', 'name email')
+    .sort({ price: 1 });
 
   res.json(result);
 };
-/** */
-
-// const getAll = async (req, res) => {
-//   const { page = 1, limit = 10 } = req.query;
-//   const skip = (page - 1) * limit;
-//   const result = await Monument.find({}, '-createdAt -updatedAt', {
-//     skip,
-//     limit,
-//   }).populate('owner', 'name email');
-
-//   res.json(result);
-// };
 
 const getById = async (req, res) => {
   console.log(req.params);
