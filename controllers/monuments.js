@@ -15,7 +15,7 @@ const getAll = async (req, res) => {
   if (subtitle && (subtitle === 'open' || subtitle === 'closed')) {
     query.subtitle = subtitle;
   }
-
+  const total = await Monument.countDocuments(query);
   const result = await Monument.find(query, '-createdAt -updatedAt', {
     skip,
     limit,
@@ -23,7 +23,7 @@ const getAll = async (req, res) => {
     .populate('owner', 'name email')
     .sort({ price: 1 });
 
-  res.json(result);
+  res.json({ total, data: result });
 };
 
 const getById = async (req, res) => {
