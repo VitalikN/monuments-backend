@@ -4,12 +4,16 @@ const { Monument } = require('../models/monument');
 /** */
 
 const getAll = async (req, res) => {
-  const { page = 1, limit = 10, category } = req.query;
+  const { page = 1, limit = 10, category, subtitle } = req.query;
   const skip = (page - 1) * limit;
 
   const query = {};
   if (category) {
     query.category = category;
+  }
+
+  if (subtitle && (subtitle === 'open' || subtitle === 'closed')) {
+    query.subtitle = subtitle;
   }
 
   const result = await Monument.find(query, '-createdAt -updatedAt', {
