@@ -27,11 +27,11 @@ router.post(
   validateBody(schemas.addSchema),
   ctrl.add
 );
-router.put(
+router.patch(
   '/:id',
   authenticate,
   isValidId,
-  validateBody(schemas.addSchema),
+  validateBody(schemas.updateSchema),
   ctrl.updateById
 );
 

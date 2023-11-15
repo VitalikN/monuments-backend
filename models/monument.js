@@ -57,6 +57,15 @@ const addSchema = Joi.object({
   price: Joi.number().required(),
   favorite: Joi.boolean(),
 });
+
+const updateSchema = Joi.object({
+  title: Joi.string(),
+  subtitle: Joi.string().valid(...subtitleList),
+  category: Joi.string().valid(...typeList),
+  price: Joi.number(),
+  favorite: Joi.boolean(),
+});
+
 const updateFavoriteSchemas = Joi.object({
   favorite: Joi.boolean().required(),
 });
@@ -64,6 +73,7 @@ const updateFavoriteSchemas = Joi.object({
 const schemas = {
   addSchema,
   updateFavoriteSchemas,
+  updateSchema,
 };
 
 monumentSchema.post('save', HandleMongooseError);
