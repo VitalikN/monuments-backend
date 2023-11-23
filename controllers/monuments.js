@@ -25,10 +25,8 @@ const getAll = async (req, res) => {
 };
 
 const getById = async (req, res) => {
-  console.log(req.params);
-
-  const { id } = req.params;
-  const result = await Monument.findById(id);
+  const { monumentId } = req.params;
+  const result = await Monument.findById(monumentId);
   if (!result) {
     throw HttpError(404, 'Monument not found');
   }
@@ -73,8 +71,10 @@ const updateById = async (req, res) => {
 };
 
 const updateFavorite = async (req, res) => {
-  const { id } = req.params;
-  const result = await Monument.findByIdAndUpdate(id, req.body, { new: true });
+  const { monumentId } = req.params;
+  const result = await Monument.findByIdAndUpdate(monumentId, req.body, {
+    new: true,
+  });
   if (!result) {
     throw HttpError(404, 'Monument not found');
   }
@@ -82,8 +82,8 @@ const updateFavorite = async (req, res) => {
 };
 
 const deleteById = async (req, res) => {
-  const { id } = req.params;
-  const result = await Monument.findByIdAndRemove(id);
+  const { monumentId } = req.params;
+  const result = await Monument.findByIdAndRemove(monumentId);
   if (!result) {
     throw HttpError(404, 'monument not found');
   }
