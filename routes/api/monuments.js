@@ -28,9 +28,10 @@ router.post(
   ctrl.add
 );
 router.patch(
-  '/:id',
+  '/:monumentId',
   authenticate,
   isValidId,
+  upload.fields([{ name: 'url', maxCount: 1 }]),
   validateBody(schemas.updateSchema),
   ctrl.updateById
 );

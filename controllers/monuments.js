@@ -1,8 +1,6 @@
 const { HttpError, ctrlWrapper } = require('../helpers');
 const { Monument } = require('../models/monument');
 
-/** */
-
 const getAll = async (req, res) => {
   const { page = 1, limit = 10, category, subtitle } = req.query;
   const skip = (page - 1) * limit;
@@ -51,12 +49,27 @@ const add = async (req, res) => {
 };
 
 const updateById = async (req, res) => {
-  const { id } = req.params;
-  const result = await Monument.findByIdAndUpdate(id, req.body, { new: true });
-  if (!result) {
+  const { monumentId } = req.params;
+
+  const monument = await Monument.findById(monumentId);
+  if (!monument) {
     throw HttpError(404, 'Monument not found');
   }
-  res.json(result);
+  let newUrl;
+  if (req.files['url']) {
+    newUrl = req.files['url'][0].path;
+  }
+  const updatedProduct = await Monument.findByIdAndUpdate(
+    monumentId,
+    {
+      ...req.body,
+      url: newUrl || monument.url,
+    },
+    {
+      new: true,
+    }
+  );
+  res.status(200).json(updatedProduct);
 };
 
 const updateFavorite = async (req, res) => {

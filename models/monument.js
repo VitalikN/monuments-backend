@@ -5,6 +5,7 @@ const { HandleMongooseError } = require('../helpers');
 
 const typeList = ['single', 'double', 'accessories', 'icons'];
 const subtitleList = ['open', 'closed'];
+
 const monumentSchema = new Schema(
   {
     // аксесуари ікони одинарні подвійні
