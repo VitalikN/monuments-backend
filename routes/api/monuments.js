@@ -17,8 +17,6 @@ router.get('/', ctrl.getAll);
 
 router.get('/:monumentId', authenticate, isValidId, ctrl.getById);
 
-//  upload.fields([{name: "poster" ,  maxCount: 1}, {name: "second-poster", maxCount:2}]), якщо в кількох полях очікуєтмо картинку
-//  upload.array("poster", 9) максимальна кількисть в цьому полі
 router.post(
   '/',
   authenticate,

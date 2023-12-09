@@ -7,6 +7,7 @@ const app = express();
 
 const authRoyter = require('./routes/api/auth');
 const monumentsRouter = require('./routes/api/monuments');
+const epitaphsRouter = require('./routes/api/epitaphs');
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 
@@ -14,10 +15,9 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
-// app.use(express.static('public'));
-
 app.use('/api/admin', authRoyter);
 app.use('/api/monuments', monumentsRouter);
+app.use('/api/epitaphs', epitaphsRouter);
 
 app.use((req, res) => {
   res.status(404).json({
