@@ -16,7 +16,7 @@ const getAllEpitaphs = async (req, res) => {
   const result = await Epitaph.find({}, '-createdAt -updatedAt', {
     skip,
     limit,
-  });
+  }).sort({ epitaphNumber: 1 });
 
   res.json({ total, data: result });
 };

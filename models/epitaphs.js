@@ -4,6 +4,10 @@ const { HandleMongooseError } = require('../helpers');
 
 const epitaphSchema = new Schema(
   {
+    epitaphNumber: {
+      type: Number,
+      required: true,
+    },
     epitaph: {
       type: String,
       required: true,
@@ -13,9 +17,11 @@ const epitaphSchema = new Schema(
 );
 const addSchemaEpitaphs = Joi.object({
   epitaph: Joi.string().required(),
+  epitaphNumber: Joi.number().required(),
 });
 const updateSchemaEpitaphs = Joi.object({
   epitaph: Joi.string(),
+  epitaphNumber: Joi.number(),
 });
 const schemas = {
   addSchemaEpitaphs,
