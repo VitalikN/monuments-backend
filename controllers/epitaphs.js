@@ -29,16 +29,14 @@ const updateEpitaphById = async (req, res) => {
     throw HttpError(404, 'Epitaph not found');
   }
 
-  const updatedProduct = await Epitaph.findByIdAndUpdate(
+  const updatedEpitaph = await Epitaph.findByIdAndUpdate(
     monumentId,
-    {
-      ...req.body,
-    },
+    { ...req.body },
     {
       new: true,
     }
   );
-  res.status(200).json(updatedProduct);
+  res.status(200).json(updatedEpitaph);
 };
 
 const deleteById = async (req, res) => {
