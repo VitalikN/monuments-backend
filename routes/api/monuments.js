@@ -25,6 +25,7 @@ router.post(
   validateBody(schemas.addSchema),
   ctrl.add
 );
+
 router.patch(
   '/:monumentId',
   authenticate,
