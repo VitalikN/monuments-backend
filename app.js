@@ -8,6 +8,7 @@ const app = express();
 const authRoyter = require('./routes/api/auth');
 const monumentsRouter = require('./routes/api/monuments');
 const epitaphsRouter = require('./routes/api/epitaphs');
+const sendMessageRouter = require('./routes/api/sendMessage');
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use('/api/admin', authRoyter);
 app.use('/api/monuments', monumentsRouter);
 app.use('/api/epitaphs', epitaphsRouter);
+app.use('/api/sendMessage', sendMessageRouter);
 
 app.use((req, res) => {
   res.status(404).json({
