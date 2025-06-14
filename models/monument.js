@@ -15,45 +15,19 @@ const monumentSchema = new Schema(
       required: true,
     },
     // відкритий або закритий
-    // subtitle: {
-    //   type: String,
-    //   enum: subtitleList,
-    //   // required: true,
-    // },
-
-     subtitle: {
+    subtitle: {
       type: String,
       enum: subtitleList,
-      validate: {
-        validator: function (value) {
-          if (this.category === 'single' || this.category === 'double') {
-            return !!value; // обов'язковий
-          }
-          return true; 
-        },
-        message: 'Subtitle is required for single and double categories',
-      },
+      required: true,
     },
     // опис
     title: {
       type: String,
       required: true,
     },
-    // price: {
-    //   type: Number,
-    //   // required: true,
-    // },
-      price: {
+    price: {
       type: Number,
-      validate: {
-        validator: function (value) {
-          if (this.category === 'single' || this.category === 'double') {
-            return value !== undefined && value !== null;
-          }
-          return true;
-        },
-        message: 'Price is required for single and double categories',
-      },
+      required: true,
     },
     favorite: {
       type: Boolean,
@@ -75,39 +49,21 @@ const monumentSchema = new Schema(
 
 const addSchema = Joi.object({
   title: Joi.string().required(),
-   subtitle: Joi.when('category', {
-    is: Joi.valid('single', 'double'),
-    then: Joi.string().valid(...subtitleList).required().messages({
-      'any.required': 'Поле "Тип" обовʼязкове для одиночних і подвійних памʼятників.',
-    }),
-    otherwise: Joi.forbidden(), 
-  }),
+  subtitle: Joi.string()
+    .valid(...subtitleList)
+    .required(),
   category: Joi.string()
     .valid(...typeList)
     .required(),
-   
-   price: Joi.when('category', {
-    is: Joi.valid('icons'),
-    then: Joi.forbidden(),  
-    otherwise: Joi.number().required(),  
-  }),
-
+  price: Joi.number().required(),
   favorite: Joi.boolean(),
 });
 
 const updateSchema = Joi.object({
   title: Joi.string(),
-  subtitle: Joi.when('category', {
-    is: Joi.valid('single', 'double'),
-    then: Joi.string().valid(...subtitleList),
-    otherwise: Joi.forbidden(),
-  }),
+  subtitle: Joi.string().valid(...subtitleList),
   category: Joi.string().valid(...typeList),
-  price: Joi.when('category', {
-    is: Joi.valid('icons', 'accessories'),
-    then: Joi.forbidden(),
-    otherwise: Joi.number(),
-  }),
+  price: Joi.number(),
   favorite: Joi.boolean(),
 });
 
