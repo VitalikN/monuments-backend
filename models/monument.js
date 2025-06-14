@@ -18,7 +18,7 @@ const monumentSchema = new Schema(
     subtitle: {
       type: String,
       enum: subtitleList,
-      required: true,
+      // required: true,
     },
     // опис
     title: {
@@ -27,7 +27,7 @@ const monumentSchema = new Schema(
     },
     price: {
       type: Number,
-      required: true,
+      // required: true,
     },
     favorite: {
       type: Boolean,
@@ -49,15 +49,26 @@ const monumentSchema = new Schema(
 
 const addSchema = Joi.object({
   title: Joi.string().required(),
-  subtitle: Joi.string()
-    .valid(...subtitleList)
-    .required(),
+   subtitle: Joi.when('category', {
+    is: Joi.valid('single', 'double'),
+    then: Joi.string().valid(...subtitleList).required().messages({
+      'any.required': 'Поле "Тип" обовʼязкове для одиночних і подвійних памʼятників.',
+    }),
+    otherwise: Joi.forbidden(), 
+  }),
   category: Joi.string()
     .valid(...typeList)
     .required(),
-  price: Joi.number().required(),
+   
+   price: Joi.when('category', {
+    is: Joi.valid('icons'),
+    then: Joi.forbidden(),  
+    otherwise: Joi.number().required(),  
+  }),
+
   favorite: Joi.boolean(),
 });
+
 
 const updateSchema = Joi.object({
   title: Joi.string(),
