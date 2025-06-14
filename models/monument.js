@@ -15,19 +15,45 @@ const monumentSchema = new Schema(
       required: true,
     },
     // відкритий або закритий
-    subtitle: {
+    // subtitle: {
+    //   type: String,
+    //   enum: subtitleList,
+    //   // required: true,
+    // },
+
+     subtitle: {
       type: String,
       enum: subtitleList,
-      // required: true,
+      validate: {
+        validator: function (value) {
+          if (this.category === 'single' || this.category === 'double') {
+            return !!value; // обов'язковий
+          }
+          return true; 
+        },
+        message: 'Subtitle is required for single and double categories',
+      },
     },
     // опис
     title: {
       type: String,
       required: true,
     },
-    price: {
+    // price: {
+    //   type: Number,
+    //   // required: true,
+    // },
+      price: {
       type: Number,
-      // required: true,
+      validate: {
+        validator: function (value) {
+          if (this.category === 'single' || this.category === 'double') {
+            return value !== undefined && value !== null;
+          }
+          return true;
+        },
+        message: 'Price is required for single and double categories',
+      },
     },
     favorite: {
       type: Boolean,
@@ -69,12 +95,19 @@ const addSchema = Joi.object({
   favorite: Joi.boolean(),
 });
 
-
 const updateSchema = Joi.object({
   title: Joi.string(),
-  subtitle: Joi.string().valid(...subtitleList),
+  subtitle: Joi.when('category', {
+    is: Joi.valid('single', 'double'),
+    then: Joi.string().valid(...subtitleList),
+    otherwise: Joi.forbidden(),
+  }),
   category: Joi.string().valid(...typeList),
-  price: Joi.number(),
+  price: Joi.when('category', {
+    is: Joi.valid('icons', 'accessories'),
+    then: Joi.forbidden(),
+    otherwise: Joi.number(),
+  }),
   favorite: Joi.boolean(),
 });
 
